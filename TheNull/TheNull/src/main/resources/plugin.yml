@@ -5,7 +5,7 @@ api-version: '1.21'
 description: The Null faction - invitation-only transformation, commanders and the Totem of Null.
 author: TheGildedKing
 commands:
-  null:
+  'null':
     description: Manage The Null
     usage: /null <transform|remove|commander|give|info|list|setskin|reload>
     aliases: [thenull]
