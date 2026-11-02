@@ -1,0 +1,203 @@
+# ============================================================================
+#  TheNull - configuration
+#  Text uses MiniMessage: https://docs.advntr.dev/minimessage/format.html
+#  After editing run /null reload.
+# ============================================================================
+
+# Prefix put in front of every chat message below (not titles / announcements).
+prefix: "<dark_gray>[<dark_purple><bold>Null</bold><dark_gray>] <reset>"
+
+# ----------------------------------------------------------------------------
+# Random Null identities (letters A-Z and digits 0-9 only, no duplicates)
+# ----------------------------------------------------------------------------
+identity:
+  min-length: 5
+  max-length: 8
+  # Characters an identity may be built from. Only A-Z and 0-9 are accepted.
+  characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+# ----------------------------------------------------------------------------
+# Black skin. Minecraft only accepts skins hosted by Mojang, so the plugin needs
+# the "texture value" + "signature" of a black skin. Easiest way: see README
+# ("Black skin setup") and run /null setskin, which fills skin.yml for you.
+# You may also paste the values here (they win over skin.yml).
+# ----------------------------------------------------------------------------
+skin:
+  enabled: true
+  texture-value: ""
+  texture-signature: ""
+
+# ----------------------------------------------------------------------------
+# Nametags. The real nametag is hidden and replaced by a floating label.
+# ----------------------------------------------------------------------------
+nametag:
+  # Format of an ordinary Null. <identity> = their random identity.
+  null-format: "<dark_purple><bold><identity>"
+  # Height of the floating label above the head (raise it if it overlaps the head).
+  label-height: 0.35
+  label-scale: 1.0
+  # true = label visible through walls like vanilla nametags.
+  label-see-through: false
+  # Replace the real name in the death message of Nulls.
+  hide-real-name-in-death-messages: true
+
+# ----------------------------------------------------------------------------
+# The four commanders. <title> = position name, <identity> = their Null identity.
+# Commanders keep their random identity; only the formatting differs.
+# ----------------------------------------------------------------------------
+commanders:
+  sovereign:
+    title: "The Sovereign"
+    format: "<gold><bold>[<title>]</bold> <dark_purple><bold><identity>"
+  executioner:
+    title: "The Executioner"
+    format: "<dark_red><bold>[<title>]</bold> <dark_purple><bold><identity>"
+  harbinger:
+    title: "The Harbinger"
+    format: "<light_purple><bold>[<title>]</bold> <dark_purple><bold><identity>"
+  watcher:
+    title: "The Watcher"
+    format: "<aqua><bold>[<title>]</bold> <dark_purple><bold><identity>"
+
+# ----------------------------------------------------------------------------
+# Totem of Null item
+# ----------------------------------------------------------------------------
+totem:
+  name: "<dark_purple><bold>The Totem of Null"
+  lore:
+    - "<gray>A relic from the void between worlds."
+    - ""
+    - "<dark_purple>Right-click a player <gray>to invite them into the Null."
+    - "<dark_purple>Null Erasure: <gray>when it pops, every online Null dies."
+    - ""
+    - "<dark_gray>Curse of Vanishing"
+  # The enchantment is always on the item; this only hides its tooltip line.
+  hide-enchantments: true
+  # Sounds played to everyone on Null Erasure: "sound.key;volume;pitch"
+  sounds:
+    - "entity.wither.spawn;1.0;0.6"
+    - "entity.lightning_bolt.thunder;1.0;0.5"
+    - "block.end_portal.spawn;0.8;0.7"
+  # Particles at every Null that dies: "PARTICLE;count;spread;speed"
+  particles:
+    - "SOUL_FIRE_FLAME;80;0.6;0.05"
+    - "SQUID_INK;40;0.5;0.05"
+    - "REVERSE_PORTAL;60;0.6;0.1"
+
+announcements:
+  # Set to false to disable the server-wide Null Erasure announcement + title.
+  enabled: true
+
+# ----------------------------------------------------------------------------
+# Invitations (Totem right-click)
+# ----------------------------------------------------------------------------
+invitation:
+  expire-seconds: 30
+  # Closing the GUI with ESC counts as NO.
+  closing-counts-as-decline: true
+  sounds:
+    received: ["block.portal.trigger;0.6;0.6"]
+    sent: ["block.enchantment_table.use;1.0;0.6"]
+    accepted: ["entity.wither.spawn;0.6;1.2"]
+    declined: ["block.note_block.bass;1.0;0.5"]
+  gui:
+    title: "<dark_purple><bold>DO YOU WISH TO BECOME NULL?"
+    border-material: PURPLE_STAINED_GLASS_PANE
+    filler-material: BLACK_STAINED_GLASS_PANE
+    accept:   # the YES button
+      material: LIME_CONCRETE
+      name: "<green><bold>YES"
+      lore:
+        - "<gray>Become Null. Your skin turns black and"
+        - "<gray>your name is replaced by a random identity."
+    decline:  # the NO button
+      material: RED_CONCRETE
+      name: "<red><bold>NO"
+      lore:
+        - "<gray>Decline the invitation."
+    question:
+      material: ENDER_EYE
+      name: "<dark_purple><bold>THE NULL CALLS TO YOU"
+      lore:
+        - "<gray>Choose carefully."
+
+# ----------------------------------------------------------------------------
+# Effects of becoming Null / being removed
+# ----------------------------------------------------------------------------
+transformation:
+  sounds:
+    - "entity.wither.spawn;0.7;0.8"
+    - "entity.elder_guardian.curse;1.0;0.6"
+  particles:
+    - "SMOKE;80;0.5;0.05"
+    - "REVERSE_PORTAL;80;0.6;0.2"
+
+removal:
+  sounds:
+    - "block.beacon.deactivate;1.0;1.0"
+
+# ----------------------------------------------------------------------------
+# Messages. Placeholders: <player> <identity> <position> <name> <seconds> <count> <status>
+# ----------------------------------------------------------------------------
+messages:
+  no-permission: "<red>You do not have permission to do that."
+  usage: "<gray>/null <transform|remove|commander|give|info|list|setskin|reload>"
+  usage-transform: "<gray>Usage: /null transform <player> [sovereign|executioner|harbinger|watcher]"
+  usage-remove: "<gray>Usage: /null remove <player>"
+  usage-commander: "<gray>Usage: /null commander <player> <position>  or  /null commander remove <position>"
+  usage-give: "<gray>Usage: /null give <player>"
+  usage-info: "<gray>Usage: /null info <player>"
+  players-only: "<red>Only players can use this command."
+  player-not-found: "<red>Player '<name>' was not found (they must be online or have played here before)."
+  invalid-position: "<red>Unknown position. Use sovereign, executioner, harbinger or watcher."
+
+  already-null: "<red><player> is already Null."
+  not-null: "<red><player> is not Null."
+  transform-admin: "<green><player> is now Null with the identity <dark_purple><identity><green>."
+  transform-target: "<dark_purple>You have become Null. <gray>Your identity is <dark_purple><bold><identity><gray>."
+  transform-offline-note: "<gray><player> is offline; their Null appearance applies when they next join."
+  skin-not-configured: "<yellow>Warning: no black skin is configured yet, so the skin does not change. See README (Black skin setup) or run /null setskin."
+  remove-admin: "<green><player> (<identity>) is no longer Null."
+  remove-target: "<gray>You have been released from the Null. Your name and skin are restored."
+  remove-offline-note: "<gray><player> is offline; their original appearance is restored when they next join."
+  restored-on-join: "<gray>You were released from the Null. Your name and skin are restored."
+  skin-restore-relog: "<yellow>Your original skin could not be restored live. Please reconnect."
+
+  commander-admin-assigned: "<green><player> is now <position>."
+  commander-replaced: "<gray><player> was replaced as <position> and is now an ordinary Null."
+  commander-target-assigned: "<dark_purple>You have been appointed <bold><position><dark_purple>."
+  commander-target-removed: "<gray>You are no longer <position>."
+  commander-removed: "<green><position> (<player>) was removed. The position is free."
+  commander-freed: "<gray>The position <position> is now free."
+  commander-position-empty: "<red><position> is not assigned to anyone."
+  commander-not-null: "<red><player> is not Null. Use /null transform <player> <position> first."
+
+  give-admin: "<green>Gave a Totem of Null to <player>."
+  give-target: "<dark_purple>You received a Totem of Null."
+
+  info-null: "<dark_purple><player> <gray>is Null | identity <dark_purple><identity><gray> | position <position> | <status>"
+  info-not-null: "<gray><player> is not Null."
+  list-header: "<dark_purple>Registered Nulls: <white><count>"
+  list-commander: "<gold><position>: <white><player> <gray>(<identity>)"
+  list-commander-empty: "<gold><position>: <dark_gray>vacant"
+  list-entry: "<gray>- <white><player> <gray>(<identity>)"
+  setskin-done: "<green>Black skin saved to skin.yml from your current skin. New Nulls will use it."
+  setskin-failed: "<red>Could not read a skin from your profile. Make sure you are online with a Mojang account skin."
+  reload-done: "<green>TheNull configuration reloaded."
+
+  invite-sent: "<dark_purple>Invitation sent to <player>. <gray>It expires in <seconds> seconds."
+  invite-received: "<dark_purple><player> invites you to become Null. <gray>Answer in the menu within <seconds> seconds."
+  invite-target-already-null: "<red><player> is already Null and cannot be invited."
+  invite-target-pending: "<red><player> already has a pending invitation."
+  invite-accepted-target: "<dark_purple>You have accepted. Welcome to the Null."
+  invite-accepted-inviter: "<dark_purple><player> accepted your invitation and is now Null as <identity>."
+  invite-declined-target: "<gray>You declined the invitation."
+  invite-declined-inviter: "<gray><player> declined your invitation."
+  invite-expired-target: "<gray>The invitation expired."
+  invite-expired-inviter: "<gray>Your invitation to <player> expired."
+  invite-cancelled: "<gray>The invitation was cancelled because a player disconnected."
+
+  # Null Erasure (no prefix). <player> = holder (identity if they are Null).
+  totem-announcement: "<dark_purple><bold>The Totem of Null has been activated by <player>. Every Null is erased."
+  totem-title: "<dark_purple><bold>NULL ERASURE"
+  totem-subtitle: "<gray>Activated by <player>"
