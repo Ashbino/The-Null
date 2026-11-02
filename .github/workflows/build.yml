@@ -17,7 +17,7 @@ jobs:
         run: |
           file=$(find . -name settings.gradle -not -path './.git/*' | head -n 1)
           if [ -z "$file" ]; then
-            echo "::error::settings.gradle not found. Upload the project files (build.gradle, settings.gradle, src/) to the repository."
+            echo "::error::settings.gradle not found anywhere in the repository."
             exit 1
           fi
           echo "dir=$(dirname "$file")" >> "$GITHUB_OUTPUT"
@@ -35,7 +35,23 @@ jobs:
 
       - name: Build plugin
         working-directory: ${{ steps.locate.outputs.dir }}
-        run: gradle build --stacktrace
+        shell: bash
+        run: |
+          set +e
+          gradle build --console=plain --stacktrace 2>&1 | tee build.log
+          status=${PIPESTATUS[0]}
+          if [ $status -ne 0 ]; then
+            {
+              echo "## Build errors"
+              echo '```'
+              grep -n -E "error:|warning: \[|What went wrong|Could not|> Task .* FAILED" -A4 build.log | head -n 120
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::group::KEY ERRORS"
+            grep -n -E "error:|What went wrong|Could not" -A4 build.log | head -n 120
+            echo "::endgroup::"
+          fi
+          exit $status
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
